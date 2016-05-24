@@ -2,6 +2,8 @@ defmodule Exauth.Token do
 
   alias Exauth.Store
 
+  @store :token
+
   @doc "generate a unique token"
   def generate_token do
     Base.encode32 :crypto.strong_rand_bytes(20), padding: false
@@ -64,26 +66,26 @@ defmodule Exauth.Token do
   end
 
   @doc "mainly used in testing. Clears out all auth-codes."
-  def reset_token_store!, do: :ok = Store.reset_store!
+  def reset_token_store!, do: :ok = Store.reset_store!(@store)
 
   @doc "Find OAuth token based on the token string"
   def fetch_token(t) do
-    token = Store.fetch(t)
+    token = Store.fetch(@store, t)
     oauth_token(token)
   end
 
   @doc "Store the given OAuthToken and return it."
-  def store_token(t), do: :ok = Store.store! :token, t
+  def store_token(t), do: :ok = Store.store! @store, :token, t
 
   @doc "Revoke the given OAuth token, given either a token string or object."
   def revoke_token(t) when is_binary(t) do
-    :ok = Store.revoke! t.token
+    :ok = Store.revoke! @store, t.token
   end
-  def revoke_token(t), do: :ok = Store.revoke! t.token
+  def revoke_token(t), do: :ok = Store.revoke! @store, t.token
 
   @doc "Sequence of tokens"
   def tokens do
-    Enum.map Store.entries, &oauth_token/1
+    Enum.map Store.entries(@store), &oauth_token/1
   end
 
 end

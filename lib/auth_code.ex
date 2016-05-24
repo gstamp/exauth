@@ -3,6 +3,8 @@ defmodule Exauth.AuthCode do
 
   alias Exauth.{Token, Store}
 
+  @store :auth_code
+
   @doc """
   The oauth-code defines supports various functions to verify the validity
   The following keys are defined:
@@ -66,22 +68,22 @@ defmodule Exauth.AuthCode do
   end
 
   @doc "mainly used in testing. Clears out all auth-codes."
-  def reset_auth_code_store!, do: :ok = Store.reset_store!
+  def reset_auth_code_store!, do: :ok = Store.reset_store!(@store)
 
   @doc "Find OAuth auth-code based on the auth-code string"
   def fetch_auth_code(t) do
-    Store.fetch(t) |> oauth_code()
+    Store.fetch(@store, t) |> oauth_code()
   end
 
   @doc "Revoke the auth code so it can no longer be used"
-  def revoke_auth_code!(code), do: :ok = Store.revoke(code.code)
+  def revoke_auth_code!(code), do: :ok = Store.revoke(@store, code.code)
 
   @doc "Store the given OAuthCode and return it."
-  def store_auth_code(t), do: :ok = Store.store!(:code, t)
+  def store_auth_code(t), do: :ok = Store.store!(@store, :code, t)
 
   @doc "Sequence of auth-codes"
   def auth_codes do
-    Enum.map Store.entries, &oauth_code/1
+    Enum.map Store.entries(@store), &oauth_code/1
   end
 
 

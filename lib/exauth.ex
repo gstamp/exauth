@@ -1,2 +1,0 @@
-defmodule Exauth do
-end
