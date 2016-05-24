@@ -14,7 +14,7 @@ defmodule Exauth.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :timex]]
+    [applications: [:logger, :timex, :comeonin]]
   end
 
   # Dependencies can be Hex packages:
@@ -30,6 +30,8 @@ defmodule Exauth.Mixfile do
     [{:plug, "~> 1.1"},
      {:timex, "~> 2.1"},
      {:exactor, "~> 2.2"},
-     {:mix_test_watch, "~> 0.2.6", only: [:dev, :test]}]
+     {:mix_test_watch, "~> 0.2.6", only: [:dev, :test]},
+     {:comeonin, "~> 2.4"}
+    ]
   end
 end

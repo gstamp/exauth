@@ -1,5 +1,6 @@
 %{"certifi": {:hex, :certifi, "0.4.0", "a7966efb868b179023618d29a407548f70c52466bf1849b9e8ebd0e34b7ea11f", [:rebar3], []},
   "combine": {:hex, :combine, "0.7.0", "2ac6ae852a9835fe8189af18121cddd5bed2677f5df706dc0d208af668ab845d", [:mix], []},
+  "comeonin": {:hex, :comeonin, "2.4.0", "2dc7526b6352f7cf03de79c1e19b5154ac021da48b0c1790a12841ef5ca00340", [:mix, :make, :make], []},
   "exactor": {:hex, :exactor, "2.2.0", "2a7418b82d974fe8276edd62c1facf4a9dc06339cdf11b5dcd10359e107fe5c3", [:mix], []},
   "fs": {:hex, :fs, "0.9.2", "ed17036c26c3f70ac49781ed9220a50c36775c6ca2cf8182d123b6566e49ec59", [:rebar], []},
   "gettext": {:hex, :gettext, "0.11.0", "80c1dd42d270482418fa158ec5ba073d2980e3718bacad86f3d4ad71d5667679", [:mix], []},
