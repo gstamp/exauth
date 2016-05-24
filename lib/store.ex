@@ -25,8 +25,8 @@ defmodule Exauth.Store do
 
   @doc "clear all entries"
   defcast reset_store!(type), state: store_impl do
-    s = KeyStore.reset_store!(store_impl, type)
-    new_state s
+    KeyStore.reset_store!(store_impl, type)
+    |> new_state
   end
 
 end
