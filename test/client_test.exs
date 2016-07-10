@@ -21,7 +21,6 @@ defmodule ClientTest do
     assert Client.authenticate_client(client_id, client_secret) == record # should authenticate client
     assert Client.authenticate_client(client_id, "bad") == nil # should not authenticate clients with wrong password
     assert Client.authenticate_client("idontexist", "bad") == nil # should not authenticate client with wrong id
-
   end
 
   test "client store implementation" do

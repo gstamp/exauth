@@ -76,7 +76,7 @@ defmodule Exauth.AuthCode do
   end
 
   @doc "Revoke the auth code so it can no longer be used"
-  def revoke_auth_code!(code), do: :ok = Store.revoke(@store, code.code)
+  def revoke_auth_code!(code), do: :ok = Store.revoke!(@store, code.code)
 
   @doc "Store the given OAuthCode and return it."
   def store_auth_code(t), do: :ok = Store.store!(@store, :code, t)

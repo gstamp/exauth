@@ -30,5 +30,3 @@ defmodule Exauth.Store do
   end
 
 end
-
-

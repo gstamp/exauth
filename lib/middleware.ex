@@ -1,5 +1,6 @@
 defmodule Exauth.Middleware do
   import Plug.Conn
+  alias Exauth.Token
 
   # %Plug.Conn
   # def hello_world_plug(conn, _opts) do .. end
@@ -180,7 +181,7 @@ defmodule Exauth.Middleware do
       else
         if_form conn do
           token = csrf_token(conn)
-          if token != nil and conn.params[:csrf_token] != nil and token == conn.params[:csrf_token] do
+          if token != nil and conn.params["csrf_token"] != nil and token == conn.params["csrf_token"] do
             app.(conn)
           else
             send_resp(conn, 403, "csrf token does not match")

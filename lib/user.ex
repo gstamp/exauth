@@ -1,6 +1,6 @@
 defmodule Exauth.User do
 
-  @store "user"
+  @store :user
 
   alias Exauth.{Store}
   import Comeonin.Bcrypt

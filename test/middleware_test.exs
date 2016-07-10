@@ -300,16 +300,16 @@ defmodule MiddlewareTest do
 
     conn = conn(:post, "/")
     |> setup_conn
-    |> Map.put(:params, %{csrf_token: "secrettoken"})
+    |> Map.put(:params, %{"csrf_token" => "secrettoken"})
     |> put_req_header("content-type", "application/x-www-form-urlencoded")
     |> assign(:access_token, "abcde")
     |> put_session(:csrf_token, "secrettoken")
     |> put_session(:access_token, "abcde")
     assert handler.(conn).status == 200
 
-    conn = conn(:post, "/", "csrf_token=badtoken")
-    |> setup_conn
+    conn = conn(:post, "/", %{"csrf_token" => "badtoken"})
     |> put_req_header("content-type", "application/x-www-form-urlencoded")
+    |> setup_conn
     |> assign(:access_token, "abcde")
     |> put_session(:csrf_token, "secrettoken")
     |> put_session(:access_token, "abcde")

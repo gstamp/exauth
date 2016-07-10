@@ -24,7 +24,7 @@ defimpl KeyStore, for: Map do
     map |> Map.put(type, submap)
   end
   def store!(map, type, key_param, item) do
-    unless Map.has_key?(map, type), do: map = Map.put(map, type, %{})
+    map = unless Map.has_key?(map, type), do: Map.put(map, type, %{}), else: map
     put_in(map, [type, key_param], item)
   end
   def entries(map, type) do
