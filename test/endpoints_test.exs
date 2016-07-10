@@ -7,7 +7,7 @@ defmodule EndpointsTest do
   alias Plug.ProcessStore
   alias Exauth.{Endpoints, Token, Client, Store, User, AuthCode}
 
-  defp setup_conn(conn \\ %Plug.Conn{}) do
+  defp setup_conn(conn) do
 
     session_config = Plug.Session.init store: ProcessStore, key: "foobar"
     parser_config = Plug.Parsers.init parsers: [Plug.Parsers.URLENCODED, Plug.Parsers.MULTIPART]
@@ -88,7 +88,7 @@ defmodule EndpointsTest do
 
     reset_stores
     handler = Endpoints.token_handler()
-    client = Client.register_client
+    Client.register_client
     resp_conn = conn(:get, "/", %{"grant_type" => "client_credentials", "client_id" => "bad", "client_secret" => "client"})
     |> setup_conn
     |> handler.()
@@ -100,7 +100,7 @@ defmodule EndpointsTest do
 
     reset_stores
     handler = Endpoints.token_handler()
-    client = Client.register_client
+    Client.register_client
     resp_conn = conn(:get, "/", %{"grant_type" => "client_credentials"})
     |> setup_conn
     |> handler.()
@@ -120,7 +120,7 @@ defmodule EndpointsTest do
     reset_stores
     handler = Endpoints.token_handler()
     client = Client.register_client
-    user = User.register_user "john@example.com", "password"
+    User.register_user "john@example.com", "password"
     resp_conn = conn(:get, "/", %{"grant_type" => "password",
                                   "username" => "john@example.com",
                                   "password" => "password",
@@ -138,7 +138,7 @@ defmodule EndpointsTest do
     reset_stores
     handler = Endpoints.token_handler()
     client = Client.register_client
-    user = User.register_user "john@example.com", "password"
+    User.register_user "john@example.com", "password"
     auth_str = "Basic " <> Base.encode64(client.client_id <> ":" <> client.client_secret)
     resp_conn = conn(:get, "/", %{"grant_type" => "password",
                                   "username" => "john@example.com",
@@ -155,7 +155,7 @@ defmodule EndpointsTest do
     reset_stores
     handler = Endpoints.token_handler()
     client = Client.register_client
-    user = User.register_user "john@example.com", "password"
+    User.register_user "john@example.com", "password"
     resp_conn = conn(:get, "/", %{"grant_type" => "password",
                                   "username" => "john@example.com",
                                   "password" => "not my password",
@@ -171,7 +171,7 @@ defmodule EndpointsTest do
     reset_stores
     handler = Endpoints.token_handler()
     client = Client.register_client
-    user = User.register_user "john@example.com", "password"
+    User.register_user "john@example.com", "password"
     resp_conn = conn(:get, "/", %{"grant_type" => "password",
                                   "client_id" => client.client_id,
                                   "client_secret" => client.client_secret})
@@ -184,8 +184,8 @@ defmodule EndpointsTest do
     # should fail on bad client authentication
     reset_stores
     handler = Endpoints.token_handler()
-    client = Client.register_client
-    user = User.register_user "john@example.com", "password"
+    Client.register_client
+    User.register_user "john@example.com", "password"
     resp_conn = conn(:get, "/", %{"grant_type" => "password",
                                   "username" => "john@example.com",
                                   "password" => "password",
@@ -200,8 +200,8 @@ defmodule EndpointsTest do
     # should fail with missing client authentication
     reset_stores
     handler = Endpoints.token_handler()
-    client = Client.register_client
-    user = User.register_user "john@example.com", "password"
+    Client.register_client
+    User.register_user "john@example.com", "password"
     resp_conn = conn(:get, "/", %{"grant_type" => "password"})
     |> setup_conn
     |> handler.()
@@ -297,10 +297,10 @@ defmodule EndpointsTest do
     end
 
     test "missing redirect_uri", context do
-      conn = resp_conn = conn(:get, "/", %{"grant_type" => "authorization_code",
-                                           "code" => context.code.code,
-                                           "client_id" => context.client.client_id,
-                                           "client_secret" => context.client.client_secret})
+      conn = conn(:get, "/", %{"grant_type" => "authorization_code",
+                               "code" => context.code.code,
+                               "client_id" => context.client.client_id,
+                               "client_secret" => context.client.client_secret})
       |> setup_conn
       |> context.handler.()
 
@@ -505,7 +505,7 @@ defmodule EndpointsTest do
       post_auth_redirect_uri = get_resp_header(conn, "location") |> hd
       query = URI.parse(post_auth_redirect_uri).query
       code_string = URI.decode_query(query)["code"]
-      auth_code = AuthCode.fetch_auth_code code_string
+      AuthCode.fetch_auth_code code_string
 
       assert conn.status == 302
       assert post_auth_redirect_uri == "http://test.com?code=#{code_string}&state=abcde"
@@ -613,7 +613,7 @@ defmodule EndpointsTest do
       |> context.handler.()
       redirect_uri = get_resp_header(conn, "location") |> hd
       token_string = Regex.named_captures(~r/access_token=(?<token>[^&]+)/, redirect_uri)["token"]
-      token = Token.fetch_token(token_string)
+      Token.fetch_token(token_string)
 
       assert conn.status == 302
       assert redirect_uri == "http://test.com#access_token=" <>
@@ -625,7 +625,7 @@ defmodule EndpointsTest do
   test "requesting unsupported grant" do
     reset_stores
     handler = Endpoints.token_handler
-    client = Client.register_client
+    Client.register_client
 
     conn = handler.(conn(:get, "/", %{grant_type: "telepathy"}))
     assert conn.status == 400
