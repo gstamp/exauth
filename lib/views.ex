@@ -12,7 +12,7 @@ defmodule Exauth.Views do
     input type: "hidden", name: name, value: val
   end
 
-  defp text_field(%{name: name, value: value}) do
+  defp text_field([name: name, value: value]) do
     input name: name, value: value
   end
 
